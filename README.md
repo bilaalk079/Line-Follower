@@ -51,7 +51,7 @@ Motor adjustments are handled through PWM signals, allowing the robot to vary th
 
 The robot continuously reads the digital outputs of its three IR sensors.
 
-The sensor readings are interpreted using a predefined error mapping as an alternative to analog reading.
+The sensor readings are interpreted using a predefined error mapping.
 
 | Left | Right | Middle | Interpretation | Error |
 |---|---|---|---|---|
@@ -108,13 +108,13 @@ PWM values are constrained between 0 and 255 to prevent invalid motor speed comm
 
 One of the challenges encountered during development was maintaining reliable line tracking through sharp corners.
 
-Due to hardware limitations, motor response characteristics, and the difficulty of navigating particularly sharp turns, deliberate motor stoppage was incorporated into the robot's turning strategy.
+Due to hardware limitations and the turning characteristics of the robot, the inner motor's speed was significantly reduced during directional corrections. However, the resulting PWM values were sometimes too low for the motor to overcome static friction and initiate movement.
 
-Rather than relying entirely on continuous movement through every corner, intentional stoppage allows the robot to avoid overshooting the track and gives it an opportunity to correct its alignment.
+This caused the inner motor to appear completely stationary during certain turns, effectively producing a pivot-like turning behaviour.
 
-This represents a practical engineering trade-off: prioritising reliable navigation over maintaining uninterrupted movement.
+Although this was not an explicitly implemented motor-stopping mechanism, the resulting behaviour helped the robot navigate sharper deviations without consistently overshooting the track.
 
-**Implementation note:** In the current sketch, both motors are explicitly stopped when all three sensors read HIGH. During ordinary directional corrections, the inner motor can also be reduced to zero by the speed constraints. A complete two-motor stop during every sharp turn would require an additional turning condition.
+This highlighted an important practical consideration in DC motor control: a motor's commanded PWM value does not necessarily translate into physical movement, particularly below its minimum starting threshold.
 
 ## Code Structure
 
@@ -137,17 +137,6 @@ The Arduino sketch is organised into the following functions:
 - Sharp turns can require deliberate motor stoppage due to hardware limitations.
 - Performance depends on sensor positioning, track contrast, motor characteristics, and battery voltage.
 
-## Future Improvements
-
-Potential improvements include (A new line follower):
-
-- Implementing a complete PID controller.
-- Improving sharp-corner detection and recovery.
-- Introducing adjustable motor speeds.
-- Adding sensor calibration.
-- Improving chassis stability and motor response.
-- Testing different proportional gains for more consistent tracking.
-- Implementing high speed line following
 
 ## Conclusion
 
