@@ -4,9 +4,18 @@ An Arduino-based autonomous line-following robot that uses three infrared (IR) s
 
 The robot interprets sensor readings to determine its position relative to the line and adjusts the speed of its left and right motors accordingly.
 
+The project includes the Arduino control code and the basic mechanical chassis design.
+
+## Demo
+
+Watch the robot in action:
+
+[Watch the Line Following Robot Demo on TikTok](https://vt.tiktok.com/ZSpudSwkh/)
+
 ## Overview
 
 The robot uses a three-sensor configuration consisting of:
+
 - Left IR sensor
 - Right IR sensor
 - Middle IR sensor
@@ -116,6 +125,13 @@ Although this was not an explicitly implemented motor-stopping mechanism, the re
 
 This highlighted an important practical consideration in DC motor control: a motor's commanded PWM value does not necessarily translate into physical movement, particularly below its minimum starting threshold.
 
+## Project Files
+
+| File | Description |
+|---|---|
+| [Arduino Sketch](/line-follower.ino) | Contains sensor interpretation, error calculation, and motor control logic. |
+| [Chassis Design](/line-follower.ipt) | Basic mechanical design of the robot chassis. |
+
 ## Code Structure
 
 The Arduino sketch is organised into the following functions:
@@ -134,9 +150,8 @@ The Arduino sketch is organised into the following functions:
 - The proportional controller uses a fixed gain.
 - There is no integral or derivative component.
 - Lost-line recovery relies on the previous error value.
-- Sharp turns can require deliberate motor stoppage due to hardware limitations.
+- Inner motor movement may be inconsistent at low PWM values due to motor starting torque and static friction.
 - Performance depends on sensor positioning, track contrast, motor characteristics, and battery voltage.
-
 
 ## Conclusion
 
